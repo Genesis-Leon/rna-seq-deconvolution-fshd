@@ -57,12 +57,14 @@ doi: 10.1016/j.stem.2019.12.007
 RNAseq_deconvolution_project/  
 │  
 ├── music2/  
-│ ├── GSE147457_ADT.R  
+│ ├── Music_script_GSE147457_ADT.R  
 │ ├── Music_script_GSE128357.R  
 │ ├── Music_script_GSE143704.R  
 │  
 ├── CIBERSORTx/  
-│ ├── signature_matrix_preparation.R  
+│ ├── cibersort_script_signature_matrix_GSE147457_ADT.R  
+│ ├── cibersort_script_signature_matrix_GSE128357.R  
+│ ├── cibersort_script_signature_matrix_GSE143704.R  
 │  
 ├── results/  
 │ ├── figures/  
