@@ -1,27 +1,20 @@
-install.packages("BiocManager")
-BiocManager::install("SingleCellExperiment")
-BiocManager::install("TOAST")
-install.packages("remotes")
-remotes::install_github("xuranw/MuSiC")
-install.packages('R.utils')
-
-library(data.table) #fait
-library(Matrix) #fait
-library(Seurat) #fait
-library(tidyverse) #fait
-library(SingleCellExperiment) #fait
+library(data.table) 
+library(Matrix)
+library(Seurat) 
+library(tidyverse)
+library(SingleCellExperiment)
 library(MuSiC)
 
 # Charger les donnes
 ############################
-base_dir <- "~/Bureau/datacenter/Eq_Magdinier/Etudiants/Genesis/Deconvolution_cellulaire/1_Data_index/GSE147457_RAW_ADT/"
+base_dir <- "~/GSE147457_RAW_ADT/"
 files <- list.files(
   path = base_dir,
   pattern = "collapsed.HUMAN.dge.filtered.tsv.gz$",
   full.names = TRUE,
   recursive = TRUE)
 
-length(files)  # change selon le dossier choisi 
+length(files) #Only a verification
 ############################
 
 # Creation objet seurat
@@ -51,7 +44,7 @@ for (f in files) {
 }
 ############################
 
-#Integration PAS MERGE CAR IL Y A TROP DE FICHIERS
+#Integration 
 ############################
 # Normalisation 
 seurat_list <- lapply(seurat_list, NormalizeData)
@@ -92,9 +85,9 @@ seurat_obj_a <- FindClusters(seurat_obj_a, resolution = 0.5)
 # UMAP
 seurat_obj_a <- RunUMAP(seurat_obj_a, dims = 1:30)
 # Visualisation clusters
-DimPlot(seurat_obj_a, label = TRUE) #Les clusters sont bien separes donc on voit des groupes biologiquements bien separes 
+DimPlot(seurat_obj_a, label = TRUE)
 # Vérification batch effect (samples)
-DimPlot(seurat_obj_a, group.by = "sample") #Tous les samples sont bien melanges, donc il na pas de effet batch entre eux
+DimPlot(seurat_obj_a, group.by = "sample")
 
 DefaultAssay(seurat_obj_a) <- "RNA"
 ############################
@@ -137,7 +130,7 @@ DimPlot(seurat_obj_a, label = TRUE, group.by = "seurat_clusters")
 
 # SINGLE CELL EXPERIMENT 
 ############################
-counts_mat <- seurat_obj_a@assays$RNA$counts #ATTENTION NE PAS CHANGER SINON PROBLEMES AVEC SEURAT V5
+counts_mat <- seurat_obj_a@assays$RNA$counts
 
 sce <- SingleCellExperiment(
   assays = list(counts = counts_mat)
@@ -152,7 +145,7 @@ sce <- sce[, !is.na(sce$cell_type)]
 
 # BULK DATA
 ############################
-bulk <- fread("~/Bureau/datacenter/Eq_Magdinier/Etudiants/Genesis/Deconvolution_cellulaire/1_Data/Atypique/atypique.txt")
+bulk <- fread("FSHD2_day30.txt")
 bulk_clean <- bulk %>%
   group_by(Genes) %>%
   summarise(across(where(is.numeric), mean))
@@ -208,7 +201,7 @@ df_res17 <- df_res17[, c("Sample", setdiff(colnames(df_res17), "Sample"))]
 
 write.table(
   df_res17,
-  file = "music_Atypique_day30_GSE147457_ADT.txt",
+  file = "music_FSHD2_day30_GSE147457_ADT.txt",
   sep = "\t",
   quote = FALSE,
   row.names = FALSE
