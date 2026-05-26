@@ -7,19 +7,19 @@ library(data.table)
 # Chargement de donnes
 ############################
 # Organoid 1
-org1 <- Read10X_h5("C:/Users/l25024469/Documents/Deconvolution_cellulaire/1_Data_index/GSE128357/GSM3672210_Day-50_NM-organoid_filtered_gene_bc_matrices_h5.h5")
+org1 <- Read10X_h5("GSM3672210_Day-50_NM-organoid_filtered_gene_bc_matrices_h5.h5")
 seurat1 <- CreateSeuratObject(org1)
 seurat1$sample <- "organoid1"
 
 # Organoid 2
-org2 <- Read10X_h5("C:/Users/l25024469/Documents/Deconvolution_cellulaire/1_Data_index/GSE128357/GSM4276650_Day-50_NM-organoid_2_filtered_feature_bc_matrix.h5")
+org2 <- Read10X_h5("GSM4276650_Day-50_NM-organoid_2_filtered_feature_bc_matrix.h5")
 seurat2 <- CreateSeuratObject(org2)
 seurat2$sample <- "organoid2"
 ############################
 
 # Merge
 ############################
-mat1 <- seurat1@assays$RNA$counts # IMPORTANT: NE PAS TOUCHER avoid Seurat v5 multi-layer issues
+mat1 <- seurat1@assays$RNA$counts #avoid Seurat v5 multi-layer issues
 mat2 <- seurat2@assays$RNA$counts
 
 common_genes <- intersect(rownames(mat1), rownames(mat2))
@@ -60,8 +60,7 @@ seurat_obj <- RunUMAP(seurat_obj, dims = 1:20)
 # Annotation des types des cellules 
 ############################
 
-markers <- FindAllMarkers( seurat_obj, only.pos = TRUE)  #Tous les marqueurs trouves dans chaque cluster
-#Cette partie prend environ 1h donc il y a le temps de faire des autres choses :D
+markers <- FindAllMarkers( seurat_obj, only.pos = TRUE)
 
 top_markers <- markers %>% #Top marqueurs utilises pour faire la annotaion
   group_by(cluster) %>%
@@ -99,13 +98,13 @@ seurat_obj$cell_type <- plyr::mapvalues(
 
 seurat_obj$cell_type <- factor(seurat_obj$cell_type)
 
-DimPlot(seurat_obj, label = TRUE, group.by = "seurat_clusters") #Visualisaton propre
+DimPlot(seurat_obj, label = TRUE, group.by = "seurat_clusters")
 ############################
 
 # SINGLE CELL EXPERIMENT 
 ############################
 
-counts_mat <- seurat_obj@assays$RNA$counts #ATTENTION NE PAS CHANGER SINON PROBLEMES AVEC SEURAT V5
+counts_mat <- seurat_obj@assays$RNA$counts
 
 sce <- SingleCellExperiment(
   assays = list(counts = counts_mat)
@@ -122,7 +121,7 @@ sce <- sce[, !is.na(sce$cell_type)]
 # BULK DATA
 ############################
 
-bulk <- fread("C:/Users/l25024469/Documents/Deconvolution_cellulaire/1_Data/FSHD2/FSHD2_day30.txt")
+bulk <- fread("FSHD2_day30.txt")
 
 bulk_clean <- bulk %>%
   group_by(gene) %>%
