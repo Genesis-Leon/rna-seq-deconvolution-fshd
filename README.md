@@ -64,10 +64,6 @@ RNAseq_deconvolution_project/
 ├── CIBERSORTx/  
 │ ├── cibersort_script_signature_matrix_GSE147457_ADT.R  
 │ ├── cibersort_script_signature_matrix_GSE128357.R  
-│ ├── cibersort_script_signature_matrix_GSE143704.R  
-│  
-├── docs/  
-│ ├── references.md  
-│ ├── pipeline_schema.png  
+│ ├── cibersort_script_signature_matrix_GSE143704.R   
 │  
 └── README.md  
