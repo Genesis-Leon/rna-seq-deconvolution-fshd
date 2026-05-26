@@ -6,9 +6,9 @@ library(data.table)
 
 #Bulk RNA-seq
 #############
-bulk <- fread("C:/Users/l25024469/Documents/Deconvolution_cellulaire/1_Data/FSHD2/FSHD2_day30.txt")
+bulk <- fread("FSHD2_day30.txt")
 
-bulk_clean <- bulk %>% #Cette ligne permet de eviter un  decalage des resultats dans le output
+bulk_clean <- bulk %>% 
   group_by(gene) %>%
   summarise(across(where(is.numeric), mean), .groups = "drop")
 
@@ -21,12 +21,12 @@ bulk_mat <- log2(bulk_mat + 1)
 
 #scRNA-seq
 #############
-sc_raw <- fread("C:/Users/l25024469/Documents/Deconvolution_cellulaire/1_Data_index/GSE143704_DeMicheli_HumanMuscleAtlas_rawdata.txt.gz",data.table = FALSE)
+sc_raw <- fread("GSE143704_DeMicheli_HumanMuscleAtlas_rawdata.txt.gz",data.table = FALSE)
 
 rownames(sc_raw) <- sc_raw[,1]
 sc_raw <- as.matrix(sc_raw[,-1])
 
-sc_meta <- fread("C:/Users/l25024469/Documents/Deconvolution_cellulaire/1_Data_index/GSE143704_DeMicheli_HumanMuscleAtlas_metadata.txt.gz",data.table = FALSE)
+sc_meta <- fread("GSE143704_DeMicheli_HumanMuscleAtlas_metadata.txt.gz",data.table = FALSE)
 
 rownames(sc_meta) <- sc_meta[,1]
 sc_meta <- sc_meta[,-1]
