@@ -36,7 +36,6 @@ De Micheli AJ et al., 2020
 Skeletal Muscle.  
 doi: 10.1186/s13395-020-00236-3
 
----
 
 ### Human skeletal muscle development atlas
 Filippis et al., 2020  
@@ -44,7 +43,6 @@ Filippis et al., 2020
 Cell Stem Cell.  
 doi: 10.1016/j.stem.2020.04.017
 
----
 
 ### Neuromuscular organoid model
 Martins JMF et al., 2020  
